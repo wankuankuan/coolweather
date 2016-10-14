@@ -80,7 +80,7 @@ public class ChooseAreaActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_ activity", false);
+		isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -95,22 +95,26 @@ public class ChooseAreaActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
+
 		listView = (ListView) findViewById(R.id.list_view);
 		titleText = (TextView) findViewById(R.id.title_text);
+
 		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
 		listView.setAdapter(adapter);
 		coolWeatherDB = CoolWeatherDB.getInstance(this);
 		listView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int index, long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
 				if (currentLevel == LEVEL_PROVINCE) {
-					selectedProvince = provinceList.get(index);
+					selectedProvince = provinceList.get(position);
 					queryCities();
 				} else if (currentLevel == LEVEL_CITY) {
-					selectedCity = cityList.get(index);
+					selectedCity = cityList.get(position);
 					queryCounties();
 				} else if (currentLevel == LEVEL_COUNTY) {
-					String countyCode = countyList.get(index).getCountyCode();
+					String countyCode = countyList.get(position).getCountyCode();
 					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
 					intent.putExtra("county_code", countyCode);
 					startActivity(intent);
@@ -118,6 +122,7 @@ public class ChooseAreaActivity extends Activity {
 				}
 
 			}
+
 		});
 		queryProvinces(); // 加载省级数据
 	}
